@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jjl.mapper.ProductMapper">
+    <resultMap id="SelectResult" type="com.jjl.entity.Product">
+        <id column="id" jdbcType="BIGINT" property="id" />
+        <result column="name" jdbcType="VARCHAR" property="name" />
+        <result column="num" jdbcType="INTEGER" property="num" />
+        <result column="original_price" jdbcType="DECIMAL" property="originalPrice" />
+        <result column="current_price" jdbcType="DECIMAL" property="currentPrice" />
+        <result column="status" jdbcType="INTEGER" property="status" />
+        <result column="note" jdbcType="VARCHAR" property="note" />
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, name, num, original_price, current_price, status, note, create_time, update_time
+    </sql>
+
+    <select id="selectById" parameterType="Long" resultMap="SelectResult">
+        select
+        <include refid="Base_Column_List" />
+        from tab_product
+        where id = #{id}
+    </select>
+
+    <select id="selectByName" parameterType="String" resultMap="SelectResult">
+        select
+        <include refid="Base_Column_List" />
+        from tab_product
+        where name = #{name}
+    </select>
+
+    <select id="selectAll" resultMap="SelectResult">
+        select
+        <include refid="Base_Column_List" />
+        from tab_product
+    </select>
+
+    <delete id="deleteById" parameterType="Long" >
+        delete from tab_product
+        where id = #{id}
+    </delete>
+
+    <insert id="insert" parameterType="com.jjl.entity.Product">
+    insert into tab_product (id, name, num, original_price, current_price, status, note)
+    values (#{id,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{num,jdbcType=INTEGER},
+      #{originalPrice,jdbcType=DECIMAL}, #{currentPrice,jdbcType=DECIMAL},
+      #{status,jdbcType=INTEGER}, #{note,jdbcType=VARCHAR})
+    </insert>
+    
+    <update id="updatePrice">
+        update tab_product set current_price = #{price}
+        where id = #{id}
+    </update>
+
+    <update id="updateNum">
+        update tab_product set num = #{num}
+        where id = #{id}
+    </update>
+
+
+</mapper>
